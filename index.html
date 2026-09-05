@@ -1,37 +1,9 @@
 <!DOCTYPE html>
-<!--
-  ============================================================
-  PAANO I-CUSTOMIZE ANG PAGE NA ITO (basahin muna ito!)
-  ============================================================
-  1. Hanapin ang "HER NAME" sa buong file at palitan ng tunay
-     niyang pangalan.
-  2. Hanapin ang "YOUR NAME" at palitan ng pangalan/lagda mo.
-  3. Hanapin ang "ISULAT MO DITO ANG MENSAHE" sa bawat page —
-     dito mo ilalagay ang sarili mong mga salita. Ang bawat
-     <section class="page message-page"> ay ISANG buong page
-     na naka-dedicate sa isang mensahe.
-  4. GUSTO MO BA NG DAGDAG NA PAGE PARA SA IBANG MENSAHE?
-     Kopyahin lang ang isang buong <section class="page message-page">...</section>
-     block, i-paste sa ibaba nito, at palitan ang text. Awtomatiko
-     na ang navigation dots at arrows — kaya sila makikita, kahit
-     magdagdag ka pa ng maraming page.
-  5. PARA SA MGA LITRATO: gumawa ng folder na "photos" sa tabi ng
-     index.html na ito, ilagay doon ang mga larawan (hal. photos/1.jpg),
-     pagkatapos hanapin ang <div class="frame-fill"> sa Gallery page
-     at palitan ng: <img src="photos/1.jpg" alt="paglalarawan">
-  6. PARA SA MUSIC: gumawa ng folder na "music" sa tabi ng index.html,
-     ilagay doon ang mp3 file mo (hal. music/song.mp3), tapos hanapin
-     sa ibaba ang <source src="music/song.mp3" ...> at palitan kung
-     iba ang pangalan ng file mo. IMPORTANTE: hindi pwedeng mag-autoplay
-     ng may tunog ang mga browser, kaya may button na "Play Music" sa
-     itaas na kailangan niyang i-click minsan — normal lang iyon.
-  ============================================================
--->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Happy 21st, HER NAME</title>
+<title>Happy 21st, Gine</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
@@ -80,7 +52,6 @@
 
   ::selection{ background: var(--gold); color: var(--bg-deep); }
 
-  /* ---------- fixed background ---------- */
   .grain-bg{
     position: fixed;
     inset: 0;
@@ -92,7 +63,6 @@
     pointer-events: none;
   }
 
-  /* floating petal/heart particles */
   .petals{
     position: fixed;
     inset: 0;
@@ -119,7 +89,6 @@
     100%{ transform: translateY(-110vh) translateX(30px) rotate(200deg); opacity: 0; }
   }
 
-  /* ---------- page structure ---------- */
   .page{
     position: relative;
     z-index: 2;
@@ -132,6 +101,7 @@
     justify-content: center;
     text-align: center;
     padding: 6rem 1.6rem;
+    overflow: hidden;
   }
 
   .page.is-visible .reveal{
@@ -147,7 +117,6 @@
   .reveal.d2{ transition-delay: 0.28s; }
   .reveal.d3{ transition-delay: 0.46s; }
 
-  /* ---------- hero ---------- */
   .hero .kicker{
     font-size: 0.8rem;
     letter-spacing: 0.28em;
@@ -178,7 +147,6 @@
     background: linear-gradient(var(--gold), transparent);
   }
 
-  /* ---------- message pages ---------- */
   .message-page .eyebrow{
     color: var(--muted);
     font-size: 0.9rem;
@@ -195,6 +163,7 @@
     color: #ece0d4;
     max-width: 56ch;
     margin: 0 auto 1.2rem;
+    white-space: pre-line;
   }
   .message-page .signature{
     margin-top: 1.8rem;
@@ -204,7 +173,6 @@
     font-size: 1.3rem;
   }
 
-  /* ---------- gallery ---------- */
   .gallery h2{
     font-size: clamp(1.8rem, 6vw, 2.5rem);
     color: var(--gold-soft);
@@ -224,21 +192,14 @@
   }
   .frame:nth-child(3){ grid-column: 1 / -1; }
   .frame{ border: 1px solid var(--line); padding: 0.5rem; }
-  .frame-fill{
-    aspect-ratio: 4 / 5;
-    background: linear-gradient(135deg, rgba(201,161,90,0.10), rgba(217,169,171,0.08));
-    display: flex; align-items: center; justify-content: center;
-    color: var(--muted); font-size: 0.82rem; text-align: center; padding: 1rem;
-  }
-  .frame:nth-child(3) .frame-fill{ aspect-ratio: 16 / 9; }
-  .frame img{ width: 100%; height: 100%; object-fit: cover; display: block; }
+  .frame img{ width: 100%; height: 100%; object-fit: cover; display: block; aspect-ratio: 4/5; }
+  .frame:nth-child(3) img{ aspect-ratio: 16/9; }
   .frame .caption{
     padding: 0.6rem 0.2rem 0.1rem;
     font-size: 0.82rem; color: var(--muted); font-style: italic;
     font-family: 'Cormorant Garamond', serif;
   }
 
-  /* ---------- wish / candles ---------- */
   .wish h2{ font-size: clamp(1.8rem, 6vw, 2.5rem); color: var(--gold-soft); margin-bottom: 1rem; }
   .wish p{ color: #ece0d4; max-width: 46ch; margin: 0 auto 2.4rem; }
   .candles{ display: flex; justify-content: center; gap: 1.4rem; margin-bottom: 1.4rem; }
@@ -263,7 +224,7 @@
   .candle.blown .flame{ opacity: 0; transform: translateX(-50%) scaleY(0.2); animation: none; }
   .hint{ font-size: 0.8rem; color: var(--muted); }
 
-  /* ---------- closing ---------- */
+  .closing{ position: relative; }
   .closing .display{
     font-size: clamp(1.8rem, 6vw, 2.6rem);
     color: var(--gold-soft);
@@ -275,9 +236,35 @@
     font-style: italic;
     color: var(--rose);
     font-size: 1.5rem;
+    margin-top: 0.6rem;
   }
 
-  /* ---------- fixed controls ---------- */
+  /* ---------- celebration burst (replaces an external gif) ---------- */
+  .burst-layer{
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .burst-piece{
+    position: absolute;
+    left: 50%;
+    top: 55%;
+    font-size: 1.5rem;
+    opacity: 0;
+    animation: burstFly 2.2s cubic-bezier(0.2,0.7,0.3,1) forwards;
+    will-change: transform, opacity;
+  }
+  @keyframes burstFly{
+    0%{ opacity: 0; transform: translate(-50%,-50%) scale(0.3) rotate(0deg); }
+    12%{ opacity: 1; }
+    100%{
+      opacity: 0;
+      transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1) rotate(var(--rot));
+    }
+  }
+
   .music-btn{
     position: fixed;
     top: 1.2rem;
@@ -376,7 +363,7 @@
 <!-- PAGE 1: Hero -->
 <section class="page hero">
   <div class="reveal d1 kicker">a small page, for someone big to me</div>
-  <div class="reveal d2 number display">21</div>
+  <div class="reveal d2 number display">21st</div>
   <h1 class="reveal d2 name">Happy Birthday LOVEE!!</h1>
   <p class="reveal d3 sub">Twenty-one trips around the sun, and I still think you're the best part of mine.</p>
   <div class="reveal d3 scroll-hint"></div>
@@ -385,7 +372,7 @@
 <!-- PAGE 2: Message 1 -->
 <section class="page message-page">
   <h2 class="reveal d1">The first thing I loved about you</h2>
-  <p class="reveal d2">What I like about you is how kind you are. You were there for me even when I was at the lowest point in my life, and I knew I could always count on you. You’re kind, beautiful, and everything about you feels perfect to me</p>
+  <p class="reveal d2">What I like about you is how kind you are. You were there for me even when I was at the lowest point in my life, and I knew I could always count on you. You're kind, beautiful, and everything about you feels perfect to me.</p>
   <div class="reveal d3 signature">Your Future Husband</div>
 </section>
 
@@ -393,8 +380,7 @@
 <section class="page message-page">
   <div class="reveal eyebrow">02 — today</div>
   <h2 class="reveal d1">What you mean to me now</h2>
-  <p class="reveal d2">You mean so much to me, more than I can sometimes put into words. You’re not just my girlfriend, you’re someone who makes my days better and my life happier. I’m grateful for every moment we share, and I want you to know that I’ll always appreciate and care for you. I love you, and I’m thankful to have you in my life my loveee!!
-</p>
+  <p class="reveal d2">You mean so much to me, more than I can sometimes put into words. You're not just my girlfriend, you're someone who makes my days better and my life happier. I'm grateful for every moment we share, and I want you to know that I'll always appreciate and care for you. I love you, and I'm thankful to have you in my life my loveee!!</p>
   <div class="reveal d3 signature">Your Future Husband</div>
 </section>
 
@@ -402,9 +388,9 @@
 <section class="page message-page">
   <div class="reveal eyebrow">03 — the promise</div>
   <h2 class="reveal d1">What I hope for us</h2>
-  <p class="reveal d2">You mean so much to me, more than I can sometimes put into words. You’re not just my girlfriend, you’re someone who makes my days better and my life happier. I’m grateful for every moment we share, and I want you to know that I’ll always appreciate and care for you.
+  <p class="reveal d2">You mean so much to me, more than I can sometimes put into words. You're not just my girlfriend, you're someone who makes my days better and my life happier. I'm grateful for every moment we share, and I want you to know that I'll always appreciate and care for you.
 
-I also want you to always do your best in your studies. Keep working hard and don’t give up, even when school gets difficult. I believe in you and I know you’re capable of achieving your goals. Just remember to take care of yourself too and don’t be too hard on yourself.</p>
+I also want you to always do your best in your studies. Keep working hard and don't give up, even when school gets difficult. I believe in you and I know you're capable of achieving your goals. Just remember to take care of yourself too and don't be too hard on yourself.</p>
   <div class="reveal d3 signature">Your Future Husband</div>
 </section>
 
@@ -443,8 +429,9 @@ I also want you to always do your best in your studies. Keep working hard and do
 </section>
 
 <!-- PAGE 7: Closing -->
-<section class="page closing">
-  <div class="reveal display">Happy 21st, my love.<br>Here's to many more.</div>
+<section class="page closing" id="closingPage">
+  <div class="burst-layer" id="burstLayer"></div>
+  <div class="reveal display">Happy 21st, my love.<br>More Birthday to come!!</div>
   <div class="reveal d1 signature">Your Future Husband</div>
 </section>
 
@@ -557,6 +544,40 @@ I also want you to always do your best in your studies. Keep working hard and do
       }
     });
   });
+
+  // ---------- celebration burst on closing page (no gif file needed) ----------
+  const burstLayer = document.getElementById('burstLayer');
+  const closingPage = document.getElementById('closingPage');
+  const burstEmojis = ['🎉', '✨', '🎈', '💛', '🌟', '🥂'];
+  let hasBurst = false;
+
+  function fireBurst(){
+    if (hasBurst) return;
+    hasBurst = true;
+    const pieceCount = 22;
+    for (let i = 0; i < pieceCount; i++) {
+      const span = document.createElement('span');
+      span.className = 'burst-piece';
+      span.textContent = burstEmojis[Math.floor(Math.random() * burstEmojis.length)];
+      const angle = Math.random() * Math.PI * 2;
+      const distance = 110 + Math.random() * 160;
+      const dx = Math.cos(angle) * distance;
+      const dy = Math.sin(angle) * distance - 60;
+      span.style.setProperty('--dx', dx + 'px');
+      span.style.setProperty('--dy', dy + 'px');
+      span.style.setProperty('--rot', (Math.random() * 360 - 180) + 'deg');
+      span.style.animationDelay = (Math.random() * 0.35) + 's';
+      burstLayer.appendChild(span);
+      setTimeout(() => span.remove(), 2600);
+    }
+  }
+
+  const burstObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) fireBurst();
+    });
+  }, { threshold: 0.5 });
+  burstObserver.observe(closingPage);
 </script>
 
 </body>
