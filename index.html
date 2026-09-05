@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  PAANO I-CUSTOMIZE ANG PAGE NA ITO (basahin muna ito!)
+  ============================================================
+  1. Hanapin ang "HER NAME" sa buong file at palitan ng tunay
+     niyang pangalan.
+  2. Hanapin ang "YOUR NAME" at palitan ng pangalan/lagda mo.
+  3. Hanapin ang "ISULAT MO DITO ANG MENSAHE" sa bawat page —
+     dito mo ilalagay ang sarili mong mga salita. Ang bawat
+     <section class="page message-page"> ay ISANG buong page
+     na naka-dedicate sa isang mensahe.
+  4. GUSTO MO BA NG DAGDAG NA PAGE PARA SA IBANG MENSAHE?
+     Kopyahin lang ang isang buong <section class="page message-page">...</section>
+     block, i-paste sa ibaba nito, at palitan ang text. Awtomatiko
+     na ang navigation dots at arrows — kaya sila makikita, kahit
+     magdagdag ka pa ng maraming page.
+  5. PARA SA MGA LITRATO: gumawa ng folder na "photos" sa tabi ng
+     index.html na ito, ilagay doon ang mga larawan (hal. photos/1.jpg),
+     pagkatapos hanapin ang <div class="frame-fill"> sa Gallery page
+     at palitan ng: <img src="photos/1.jpg" alt="paglalarawan">
+  6. PARA SA MUSIC: gumawa ng folder na "music" sa tabi ng index.html,
+     ilagay doon ang mp3 file mo (hal. music/song.mp3), tapos hanapin
+     sa ibaba ang <source src="music/song.mp3" ...> at palitan kung
+     iba ang pangalan ng file mo. IMPORTANTE: hindi pwedeng mag-autoplay
+     ng may tunog ang mga browser, kaya may button na "Play Music" sa
+     itaas na kailangan niyang i-click minsan — normal lang iyon.
+  ============================================================
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy 21st, HER NAME</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #1b0f14;
+    --bg-deep: #120a0d;
+    --gold: #c9a15a;
+    --gold-soft: #e2c48a;
+    --rose: #d9a9ab;
+    --ivory: #f6ede2;
+    --muted: #a98d86;
+    --line: rgba(201,161,90,0.25);
+    --max: 640px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html{
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ivory);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+    height: 100svh;
+    overflow-y: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  h1,h2,h3, .display{
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    margin: 0;
+  }
+
+  ::selection{ background: var(--gold); color: var(--bg-deep); }
+
+  /* ---------- fixed background ---------- */
+  .grain-bg{
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 800px 500px at 20% -10%, rgba(201,161,90,0.10), transparent 60%),
+      radial-gradient(ellipse 700px 600px at 100% 30%, rgba(217,169,171,0.08), transparent 60%),
+      var(--bg);
+    pointer-events: none;
+  }
+
+  /* floating petal/heart particles */
+  .petals{
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .petal{
+    position: absolute;
+    bottom: -40px;
+    width: 10px;
+    height: 10px;
+    background: var(--rose);
+    opacity: 0.55;
+    border-radius: 0 60% 0 60%;
+    transform: rotate(45deg);
+    animation: drift linear infinite;
+  }
+  .petal.gold{ background: var(--gold-soft); }
+  @keyframes drift{
+    0%{ transform: translateY(0) rotate(45deg); opacity: 0; }
+    10%{ opacity: 0.6; }
+    90%{ opacity: 0.4; }
+    100%{ transform: translateY(-110vh) translateX(30px) rotate(200deg); opacity: 0; }
+  }
+
+  /* ---------- page structure ---------- */
+  .page{
+    position: relative;
+    z-index: 2;
+    min-height: 100svh;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 1.6rem;
+  }
+
+  .page.is-visible .reveal{
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal{
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+  .reveal.d1{ transition-delay: 0.1s; }
+  .reveal.d2{ transition-delay: 0.28s; }
+  .reveal.d3{ transition-delay: 0.46s; }
+
+  /* ---------- hero ---------- */
+  .hero .kicker{
+    font-size: 0.8rem;
+    letter-spacing: 0.28em;
+    color: var(--muted);
+    margin-bottom: 1.6rem;
+  }
+  .hero .number{
+    font-size: clamp(6rem, 26vw, 11rem);
+    line-height: 0.9;
+    color: var(--gold-soft);
+    font-style: italic;
+    text-shadow: 0 0 60px rgba(201,161,90,0.25);
+  }
+  .hero .name{
+    margin-top: 1.2rem;
+    font-size: clamp(2.2rem, 7vw, 3.4rem);
+  }
+  .hero .sub{
+    margin-top: 1.4rem;
+    color: var(--rose);
+    font-size: 1.05rem;
+    max-width: 30ch;
+  }
+  .scroll-hint{
+    margin-top: 3.2rem;
+    width: 1px;
+    height: 46px;
+    background: linear-gradient(var(--gold), transparent);
+  }
+
+  /* ---------- message pages ---------- */
+  .message-page .eyebrow{
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 1.4rem;
+  }
+  .message-page h2{
+    font-size: clamp(1.8rem, 6vw, 2.5rem);
+    color: var(--gold-soft);
+    margin-bottom: 1.8rem;
+    max-width: 20ch;
+  }
+  .message-page p{
+    font-size: 1.08rem;
+    color: #ece0d4;
+    max-width: 56ch;
+    margin: 0 auto 1.2rem;
+  }
+  .message-page .signature{
+    margin-top: 1.8rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--rose);
+    font-size: 1.3rem;
+  }
+
+  /* ---------- gallery ---------- */
+  .gallery h2{
+    font-size: clamp(1.8rem, 6vw, 2.5rem);
+    color: var(--gold-soft);
+    margin-bottom: 0.5rem;
+  }
+  .gallery .eyebrow{
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+  }
+  .frames{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    max-width: 560px;
+    width: 100%;
+  }
+  .frame:nth-child(3){ grid-column: 1 / -1; }
+  .frame{ border: 1px solid var(--line); padding: 0.5rem; }
+  .frame-fill{
+    aspect-ratio: 4 / 5;
+    background: linear-gradient(135deg, rgba(201,161,90,0.10), rgba(217,169,171,0.08));
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 0.82rem; text-align: center; padding: 1rem;
+  }
+  .frame:nth-child(3) .frame-fill{ aspect-ratio: 16 / 9; }
+  .frame img{ width: 100%; height: 100%; object-fit: cover; display: block; }
+  .frame .caption{
+    padding: 0.6rem 0.2rem 0.1rem;
+    font-size: 0.82rem; color: var(--muted); font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  /* ---------- wish / candles ---------- */
+  .wish h2{ font-size: clamp(1.8rem, 6vw, 2.5rem); color: var(--gold-soft); margin-bottom: 1rem; }
+  .wish p{ color: #ece0d4; max-width: 46ch; margin: 0 auto 2.4rem; }
+  .candles{ display: flex; justify-content: center; gap: 1.4rem; margin-bottom: 1.4rem; }
+  .candle{
+    width: 10px; height: 46px;
+    background: linear-gradient(var(--rose), #7d5658);
+    border-radius: 3px; position: relative; cursor: pointer;
+  }
+  .flame{
+    position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+    width: 14px; height: 20px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    background: radial-gradient(circle at 50% 30%, #fff3c4, var(--gold) 60%, transparent 80%);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    filter: drop-shadow(0 0 8px rgba(201,161,90,0.7));
+    animation: flicker 1.6s ease-in-out infinite;
+  }
+  @keyframes flicker{
+    0%,100%{ transform: translateX(-50%) scaleY(1) rotate(0deg); }
+    50%{ transform: translateX(-50%) scaleY(1.08) rotate(-2deg); }
+  }
+  .candle.blown .flame{ opacity: 0; transform: translateX(-50%) scaleY(0.2); animation: none; }
+  .hint{ font-size: 0.8rem; color: var(--muted); }
+
+  /* ---------- closing ---------- */
+  .closing .display{
+    font-size: clamp(1.8rem, 6vw, 2.6rem);
+    color: var(--gold-soft);
+    max-width: 18ch;
+    margin-bottom: 1.4rem;
+  }
+  .closing .signature{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--rose);
+    font-size: 1.5rem;
+  }
+
+  /* ---------- fixed controls ---------- */
+  .music-btn{
+    position: fixed;
+    top: 1.2rem;
+    right: 1.2rem;
+    z-index: 10;
+    border: 1px solid var(--line);
+    background: rgba(27,15,20,0.6);
+    backdrop-filter: blur(6px);
+    color: var(--ivory);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.8rem;
+    padding: 0.55rem 1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .music-btn .dot{
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--muted);
+  }
+  .music-btn.playing .dot{
+    background: var(--gold-soft);
+    box-shadow: 0 0 6px var(--gold-soft);
+    animation: pulse 1s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{ opacity: 1; } 50%{ opacity: 0.4; }
+  }
+
+  .nav-dots{
+    position: fixed;
+    right: 1.3rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .nav-dots button{
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+  }
+  .nav-dots button.active{ background: var(--gold-soft); }
+
+  .arrow-nav{
+    position: fixed;
+    bottom: 1.4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    gap: 0.9rem;
+  }
+  .arrow-nav button{
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: rgba(27,15,20,0.55);
+    backdrop-filter: blur(6px);
+    color: var(--gold-soft);
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  .arrow-nav button:disabled{ opacity: 0.25; cursor: default; }
+
+  @media (max-width: 480px){
+    .page{ padding: 5rem 1.3rem; }
+    .nav-dots{ right: 0.7rem; gap: 0.55rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grain-bg"></div>
+<div class="petals" id="petals"></div>
+
+<button class="music-btn" id="musicBtn"><span class="dot"></span><span id="musicLabel">Play Music</span></button>
+
+<audio id="bgm" loop preload="none">
+  <source src="music/song.mp3" type="audio/mpeg">
+</audio>
+
+<nav class="nav-dots" id="navDots"></nav>
+<div class="arrow-nav">
+  <button id="prevBtn" aria-label="Previous">↑</button>
+  <button id="nextBtn" aria-label="Next">↓</button>
+</div>
+
+<!-- PAGE 1: Hero -->
+<section class="page hero">
+  <div class="reveal d1 kicker">a small page, for someone big to me</div>
+  <div class="reveal d2 number display">21</div>
+  <h1 class="reveal d2 name">Happy Birthday LOVEE!!</h1>
+  <p class="reveal d3 sub">Twenty-one trips around the sun, and I still think you're the best part of mine.</p>
+  <div class="reveal d3 scroll-hint"></div>
+</section>
+
+<!-- PAGE 2: Message 1 -->
+<section class="page message-page">
+  <h2 class="reveal d1">The first thing I loved about you</h2>
+  <p class="reveal d2">What I like about you is how kind you are. You were there for me even when I was at the lowest point in my life, and I knew I could always count on you. You’re kind, beautiful, and everything about you feels perfect to me</p>
+  <div class="reveal d3 signature">Your Future Husband</div>
+</section>
+
+<!-- PAGE 3: Message 2 -->
+<section class="page message-page">
+  <div class="reveal eyebrow">02 — today</div>
+  <h2 class="reveal d1">What you mean to me now</h2>
+  <p class="reveal d2">You mean so much to me, more than I can sometimes put into words. You’re not just my girlfriend, you’re someone who makes my days better and my life happier. I’m grateful for every moment we share, and I want you to know that I’ll always appreciate and care for you. I love you, and I’m thankful to have you in my life my loveee!!
+</p>
+  <div class="reveal d3 signature">Your Future Husband</div>
+</section>
+
+<!-- PAGE 4: Message 3 -->
+<section class="page message-page">
+  <div class="reveal eyebrow">03 — the promise</div>
+  <h2 class="reveal d1">What I hope for us</h2>
+  <p class="reveal d2">You mean so much to me, more than I can sometimes put into words. You’re not just my girlfriend, you’re someone who makes my days better and my life happier. I’m grateful for every moment we share, and I want you to know that I’ll always appreciate and care for you.
+
+I also want you to always do your best in your studies. Keep working hard and don’t give up, even when school gets difficult. I believe in you and I know you’re capable of achieving your goals. Just remember to take care of yourself too and don’t be too hard on yourself.</p>
+  <div class="reveal d3 signature">Your Future Husband</div>
+</section>
+
+<!-- PAGE 5: Gallery -->
+<section class="page gallery">
+  <h2 class="reveal">Us, so far</h2>
+  <div class="reveal d1 eyebrow">a few of my favorite moments</div>
+  <div class="reveal d2 frames">
+    <div class="frame">
+      <div class="frame-fill">photo 1<br>(swap for photos/1.jpg)</div>
+      <div class="caption">isulat ang caption dito</div>
+    </div>
+    <div class="frame">
+      <div class="frame-fill">photo 2<br>(swap for photos/2.jpg)</div>
+      <div class="caption">isulat ang caption dito</div>
+    </div>
+    <div class="frame">
+      <div class="frame-fill">photo 3, wide<br>(swap for photos/3.jpg)</div>
+      <div class="caption">isulat ang caption dito</div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 6: Wish -->
+<section class="page wish">
+  <h2 class="reveal">Make a wish</h2>
+  <p class="reveal d1">Tap each candle to blow it out, then close your eyes and make a wish for the year ahead.</p>
+  <div class="reveal d2 candles" id="candles">
+    <div class="candle"><div class="flame"></div></div>
+    <div class="candle"><div class="flame"></div></div>
+    <div class="candle"><div class="flame"></div></div>
+    <div class="candle"><div class="flame"></div></div>
+    <div class="candle"><div class="flame"></div></div>
+  </div>
+  <div class="reveal d3 hint" id="candle-hint">5 candles left</div>
+</section>
+
+<!-- PAGE 7: Closing -->
+<section class="page closing">
+  <div class="reveal display">Happy 21st, my love.<br>Here's to many more.</div>
+  <div class="reveal d1 signature">— YOUR NAME</div>
+</section>
+
+<script>
+  // ---------- floating petals ----------
+  const petalContainer = document.getElementById('petals');
+  const PETAL_COUNT = 16;
+  for (let i = 0; i < PETAL_COUNT; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal' + (Math.random() > 0.5 ? ' gold' : '');
+    p.style.left = Math.random() * 100 + 'vw';
+    const size = 6 + Math.random() * 8;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.animationDuration = (14 + Math.random() * 12) + 's';
+    p.style.animationDelay = (Math.random() * 18) + 's';
+    petalContainer.appendChild(p);
+  }
+
+  // ---------- page reveal on scroll ----------
+  const pages = Array.from(document.querySelectorAll('.page'));
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('is-visible');
+    });
+  }, { threshold: 0.4 });
+  pages.forEach(p => observer.observe(p));
+
+  // ---------- nav dots ----------
+  const navDots = document.getElementById('navDots');
+  pages.forEach((p, i) => {
+    const b = document.createElement('button');
+    b.addEventListener('click', () => p.scrollIntoView({ behavior: 'smooth' }));
+    navDots.appendChild(b);
+  });
+  const dotEls = Array.from(navDots.children);
+
+  const dotObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const idx = pages.indexOf(entry.target);
+      if (entry.isIntersecting) {
+        dotEls.forEach(d => d.classList.remove('active'));
+        dotEls[idx].classList.add('active');
+        currentIndex = idx;
+        updateArrowState();
+      }
+    });
+  }, { threshold: 0.6 });
+  pages.forEach(p => dotObserver.observe(p));
+
+  // ---------- prev/next arrows ----------
+  let currentIndex = 0;
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  function updateArrowState(){
+    prevBtn.disabled = currentIndex === 0;
+    nextBtn.disabled = currentIndex === pages.length - 1;
+  }
+  prevBtn.addEventListener('click', () => {
+    if (currentIndex > 0) pages[currentIndex - 1].scrollIntoView({ behavior: 'smooth' });
+  });
+  nextBtn.addEventListener('click', () => {
+    if (currentIndex < pages.length - 1) pages[currentIndex + 1].scrollIntoView({ behavior: 'smooth' });
+  });
+  updateArrowState();
+
+  // ---------- keyboard nav ----------
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' && currentIndex < pages.length - 1) {
+      pages[currentIndex + 1].scrollIntoView({ behavior: 'smooth' });
+    } else if (e.key === 'ArrowUp' && currentIndex > 0) {
+      pages[currentIndex - 1].scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+
+  // ---------- music toggle ----------
+  const bgm = document.getElementById('bgm');
+  const musicBtn = document.getElementById('musicBtn');
+  const musicLabel = document.getElementById('musicLabel');
+  let playing = false;
+  musicBtn.addEventListener('click', () => {
+    if (!playing) {
+      bgm.play().then(() => {
+        playing = true;
+        musicBtn.classList.add('playing');
+        musicLabel.textContent = 'Playing';
+      }).catch(() => {
+        musicLabel.textContent = 'Add music/song.mp3';
+      });
+    } else {
+      bgm.pause();
+      playing = false;
+      musicBtn.classList.remove('playing');
+      musicLabel.textContent = 'Play Music';
+    }
+  });
+
+  // ---------- candles ----------
+  const candles = document.querySelectorAll('.candle');
+  const hint = document.getElementById('candle-hint');
+  let remaining = candles.length;
+  candles.forEach(c => {
+    c.addEventListener('click', () => {
+      if (!c.classList.contains('blown')) {
+        c.classList.add('blown');
+        remaining -= 1;
+        hint.textContent = remaining > 0
+          ? remaining + ' candle' + (remaining === 1 ? '' : 's') + ' left'
+          : 'wish made 🤍';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
